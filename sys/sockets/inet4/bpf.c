@@ -516,7 +516,7 @@ bpf_write (FILEPTR *fp, const char *buf, long nbytes)
 			daddr = &((const struct eth_dgram *)buf)->daddr;
 			daddrlen = ETH_ALEN;
 			memcpy (&pktype, &((const struct eth_dgram *)buf)->proto, 2);
-			if (pktype >= 1536)
+			if ((ushort) pktype < 1536)
 				pktype = ETHPROTO_8023;
 			break;
 			

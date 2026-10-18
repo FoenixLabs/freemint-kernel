@@ -1,0 +1,3 @@
+COBJS = ../main.c lan9221.c hw.c
+HEADER = hw.h board.h
+SRCFILES = $(HEADER) $(COBJS)

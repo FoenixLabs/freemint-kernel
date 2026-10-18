@@ -1,0 +1,21 @@
+A2560Me LAN9221 MiNTNet driver (GPL-2.0-or-later)
+
+Build target: 68EC060, -mshort -msoft-float. Driver entry is common ../main.c.
+PIO with a 10 ms root timeout; chip IRQs remain disabled. All hardware polling
+loops have finite limits. MAC comes from the build-84+ shared I2C transaction
+controller's factory EEPROM, or a valid already-programmed LAN9221 address.
+Attach requires the A2560Me FVRM cookie and chip ID to avoid probing other boards.
+The interface is named enN, normally en0. Bring up/down through ifconfig.
+
+Register facts: Microchip LAN9221 DS00002416A, A2560Me hardware reference rev1.8.
+The board swaps 32-bit register byte lanes. board.h centralizes that conversion;
+hw.c packs FIFO words explicitly so packet bytes and final padding are portable.
+No byte-sized LAN accesses are used. Do not reset the shared I2C controller.
+
+Runtime: INET4.XDD and LAN9221.XIF go in the kernel's module directory, normally
+C:/MINT/1-19-CUR, with XDD_LOAD=YES. DHCP uses /dev/bpf. MiNTNet's bpf_write must
+preserve Ethernet-II types (IPv4 0x0800), classifying only values <1536 as lengths.
+The associated BPF correction is included in this FreeMiNT source tree.
+
+The system workspace supplies DHCP, network utilities, recovery settings, native
+LANPROBE.TOS, and host regression tests for the actual core and BPF expression.
