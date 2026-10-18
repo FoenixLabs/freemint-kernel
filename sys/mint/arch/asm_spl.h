@@ -55,14 +55,19 @@ cpu_stop (void)
 
 	__asm__ volatile
 	(
+#ifdef MACHINE_A2560M
+		/* Enable interrupts without the unsupported board idle instruction. */
+		"movew #0x2000,%sr"
+#else
 		"stop  #0x2000"
+#endif
 	);
 }
 
 static inline void
 cpu_lpstop (void)
 {
-#ifndef __mcoldfire__
+#if !defined(__mcoldfire__) && !defined(MACHINE_A2560M)
 	/* 68060's lpstop #$2000 instruction */
 	__asm__ volatile
 	(

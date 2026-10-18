@@ -363,8 +363,8 @@ exit:	move.l	a1,sp
 
 	FUNC(detect_fpu)
 SYM(detect_fpu):
-#ifdef __mcoldfire__
-	moveq	#0,d0		// TODO ColdFire FPU
+#if defined(__mcoldfire__) || defined(MACHINE_A2560M)
+	moveq	#0,d0		// no FPU on this target
 #else
 	movem.l	a0-a2/d1,-(sp)
 	move.l	sp,a0		// save the ssp
@@ -438,8 +438,8 @@ fexit:	move.l	a1,(0x2c).w	// restore Line-F
 
 	FUNC(detect_sfp)
 SYM(detect_sfp):
-#ifdef __mcoldfire__
-	moveq	#0,d0		// there is no ColdFire SFP emulation
+#if defined(__mcoldfire__) || defined(MACHINE_A2560M)
+	moveq	#0,d0		// no SFP-004 on this target
 #else
 	movem.l	a0-a1/d1,-(sp)
 	move.l	sp,a0		// save the ssp
